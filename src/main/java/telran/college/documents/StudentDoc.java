@@ -21,6 +21,7 @@ public class StudentDoc {
 	public List<SubjectMark> getMarks() {
 		return marks;
 	}
+	
 	@Override
 	public String toString() {
 		return "StudentDoc [id=" + id + ", name=" + name + ", marks=" + marks + "]";

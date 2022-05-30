@@ -3,6 +3,11 @@ package telran.college.documents;
 public class SubjectMark {
   String subject;
   int mark;
+  
+  public SubjectMark() {
+	  
+  }
+  
 public SubjectMark(String subject, int mark) {
 	this.subject = subject;
 	this.mark = mark;

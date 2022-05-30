@@ -2,14 +2,21 @@ package telran.college.service;
 
 import java.util.List;
 
-import org.slf4j.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import telran.college.documents.*;
-import telran.college.dto.*;
-import telran.college.projection.*;
-import telran.college.repo.*;
+import telran.college.documents.StudentDoc;
+import telran.college.documents.SubjectDoc;
+import telran.college.documents.SubjectMark;
+import telran.college.dto.Mark;
+import telran.college.dto.Student;
+import telran.college.dto.Subject;
+import telran.college.projection.StudentNameProj;
+import telran.college.projection.StudentMarksProj;
+import telran.college.repo.StudentRepository;
+import telran.college.repo.SubjectRepository;
 @Service
 public class CollegeServiceImpl implements CollegeService {
 	static Logger LOG = LoggerFactory.getLogger(CollegeService.class);
@@ -70,8 +77,9 @@ public class CollegeServiceImpl implements CollegeService {
 
 	@Override
 	public List<Integer> getStudentMarksSubject(String name, String subjectName) {
-		// TODO Auto-generated method stub
-		return null;
+		StudentMarksProj marks = studentsRepository.findByNameAndMarksSubject(name, subjectName);
+		LOG.debug("marks of {} by subject {} from getStudentMarksSubject : {}", name, subjectName, marks);
+		return marks.getMarks().stream().map(sm -> sm.getMark()).toList();
 	}
 
 	@Override

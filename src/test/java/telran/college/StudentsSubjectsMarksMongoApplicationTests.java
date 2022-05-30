@@ -31,13 +31,13 @@ class StudentsSubjectsMarksMongoApplicationTests {
 		collegeService.addMark(new Mark(5, 3, 70));
 		
 	}
-//	@Test
-//	@Order(2)
-//	void getMarksStudentSubjectTest() {
-//		List<Integer> expected = Arrays.asList(70, 80, 90);
-//		List<Integer> actual = collegeService.getStudentMarksSubject("student1", "subject1");
-//		assertIterableEquals(expected, actual);
-//	}
+	@Test
+	@Order(2)
+	void getMarksStudentSubjectTest() {
+		List<Integer> expected = Arrays.asList(70, 80, 90);
+		List<Integer> actual = collegeService.getStudentMarksSubject("student1", "subject1");
+		assertIterableEquals(expected, actual);
+	}
 	@Test
 	@Order(3)
 	void getStudentsSubjectMarks() {
