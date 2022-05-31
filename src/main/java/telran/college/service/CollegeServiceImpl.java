@@ -77,9 +77,9 @@ public class CollegeServiceImpl implements CollegeService {
 
 	@Override
 	public List<Integer> getStudentMarksSubject(String name, String subjectName) {
-		StudentMarksProj marks = studentsRepository.findByNameAndMarksSubject(name, subjectName);
-		LOG.debug("marks of {} by subject {} from getStudentMarksSubject : {}", name, subjectName, marks);
-		return marks.getMarks().stream().map(sm -> sm.getMark()).toList();
+		StudentMarksProj marks = studentsRepository.findByName(name);
+		LOG.debug("marks of {} from getStudentMarksSubject : {}", name, marks);
+		return marks.getMarks().stream().filter(sm -> sm.getSubject().equals(subjectName)).map(sm -> sm.getMark()).toList();
 	}
 
 	@Override

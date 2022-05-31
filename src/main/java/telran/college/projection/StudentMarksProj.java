@@ -7,4 +7,5 @@ import telran.college.documents.SubjectMark;
 public interface StudentMarksProj {
 
 	List<SubjectMark> getMarks();
+
 }

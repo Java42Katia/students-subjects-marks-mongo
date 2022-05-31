@@ -37,6 +37,10 @@ class StudentsSubjectsMarksMongoApplicationTests {
 		List<Integer> expected = Arrays.asList(70, 80, 90);
 		List<Integer> actual = collegeService.getStudentMarksSubject("student1", "subject1");
 		assertIterableEquals(expected, actual);
+		collegeService.addMark(new Mark(3, 2, 60));
+		expected = Arrays.asList(60);
+		actual = collegeService.getStudentMarksSubject("student3", "subject1");
+		assertIterableEquals(expected, actual);
 	}
 	@Test
 	@Order(3)
