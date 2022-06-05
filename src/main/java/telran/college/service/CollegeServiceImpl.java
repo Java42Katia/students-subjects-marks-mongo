@@ -16,16 +16,20 @@ import telran.college.dto.Subject;
 import telran.college.projection.StudentNameProj;
 import telran.college.projection.StudentMarksProj;
 import telran.college.repo.StudentRepository;
+import telran.college.repo.SubjectMarkRepository;
+//import telran.college.repo.SubjectMarkRepository;
 import telran.college.repo.SubjectRepository;
 @Service
 public class CollegeServiceImpl implements CollegeService {
 	static Logger LOG = LoggerFactory.getLogger(CollegeService.class);
    StudentRepository studentsRepository;
    SubjectRepository subjectsRepository;
-   
-	public CollegeServiceImpl(StudentRepository studentsRepository, SubjectRepository subjectsRepository) {
+   SubjectMarkRepository subjectMarkRepository;
+   // added SubjectMarkRepository 
+	public CollegeServiceImpl(StudentRepository studentsRepository, SubjectRepository subjectsRepository, SubjectMarkRepository subjectMarkRepository) {
 	this.studentsRepository = studentsRepository;
 	this.subjectsRepository = subjectsRepository;
+	this.subjectMarkRepository = subjectMarkRepository;
 }
 
 	@Override
@@ -63,7 +67,15 @@ public class CollegeServiceImpl implements CollegeService {
 			throw new RuntimeException(String.format("Subject with id %d doesn't exist", mark.suid));
 		}
 		List<SubjectMark> marks = studentDoc.getMarks();
-		marks.add(new SubjectMark(subjectDoc.getSubjectName(), mark.mark));
+		
+		/********** added to account for Null values of Marks in methods using avgAggregation **********/
+		SubjectMark subjectMark = new SubjectMark(subjectDoc.getSubjectName(), mark.mark);
+		subjectMarkRepository.save(subjectMark);
+		marks.add(subjectMark);
+
+		/**********kG**********/
+		
+//		marks.add(new SubjectMark(subjectDoc.getSubjectName(), mark.mark));
 		studentsRepository.save(studentDoc);
 
 	}
@@ -76,70 +88,76 @@ public class CollegeServiceImpl implements CollegeService {
 	}
 
 	@Override
-	public List<Integer> getStudentMarksSubject(String name, String subjectName) {
-		StudentMarksProj marks = studentsRepository.findByName(name);
-		LOG.debug("marks of {} from getStudentMarksSubject : {}", name, marks);
-		return marks.getMarks().stream().filter(sm -> sm.getSubject().equals(subjectName)).map(sm -> sm.getMark()).toList();
-	}
-
-	@Override
 	public List<Student> goodCollegeStudents() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return studentsRepository.findGoodStudents();
 	}
 
 	@Override
 	public List<Student> bestStudents(int nStudents) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return studentsRepository.findTopBestStudents(nStudents);
+	}
+
+	/********************** hw 67 ****************/
+
+	@Override
+	public List<Integer> getStudentMarksSubject(String name, String subjectName) {
+		//TODO think of another implementation based on Aggregation Framework
+		
+//		StudentMarksProj marks = studentsRepository.findByNameAndMarksSubject(name, subjectName);
+//		LOG.debug("marks from getStudentMarksSubject : {} of student {}",  marks, name);
+//		return marks.getMarks().stream().filter(sm -> sm.getSubject().equals(subjectName)).map(SubjectMark::getMark).toList();
+		
+		return studentsRepository.findStudentMarksSubject(name, subjectName);
 	}
 
 	@Override
 	public List<Student> bestStudentsSubject(int nStudents, String subjectName) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return studentsRepository.findBestStudentsSubject(nStudents, subjectName);
 	}
 
 	@Override
 	public Subject subjectGreatestAvgMark() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return subjectsRepository.findSubjectGreatestAvgMark();
 	}
 
 	@Override
 	public List<Subject> subjectsAvgMarkGreater(int avgMark) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return subjectsRepository.findSubjectsAvgMarkGreater(avgMark);
 	}
 
 	@Override
 	public void deleteStudentsAvgMarkLess(int avgMark) {
 		// TODO Auto-generated method stub
-
+		studentsRepository.deleteStudentsAvgMarkLess(avgMark);
 	}
 
 	@Override
 	public List<Student> deleteStudentsMarksCountLess(int count) {
 		// TODO Auto-generated method stub
-		return null;
+		return studentsRepository.deleteStudentsMarksCountLess(count);
 	}
 
 	@Override
 	public List<Student> getStudentsAllMarksSubject(int mark, String subject) {
-		// TODO Auto-generated method stub
-		return null;
+
+		return studentsRepository.findStudentsAllMarksSubjectGreaterThen(mark, subject);
 	}
 
 	@Override
 	public List<Student> getStudentsMaxMarksCount() {
-		// TODO Auto-generated method stub
-		return null;
+
+		return studentsRepository.findStudentsMaxMarksCount();
 	}
 
 	@Override
 	public List<Subject> getSubjectsAvgMarkLess(int avgMark) {
-		// TODO Auto-generated method stub
-		return null;
+
+		return subjectsRepository.findSubjectsAvgMarkLess(avgMark);
 	}
 
 }

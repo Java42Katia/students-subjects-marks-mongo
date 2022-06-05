@@ -27,5 +27,4 @@ public class StudentDoc {
 		return "StudentDoc [id=" + id + ", name=" + name + ", marks=" + marks + "]";
 	}
 	
-	
 }

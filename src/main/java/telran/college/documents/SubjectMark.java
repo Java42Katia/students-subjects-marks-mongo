@@ -1,12 +1,11 @@
 package telran.college.documents;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "marks")
 public class SubjectMark {
   String subject;
   int mark;
-  
-  public SubjectMark() {
-	  
-  }
   
 public SubjectMark(String subject, int mark) {
 	this.subject = subject;

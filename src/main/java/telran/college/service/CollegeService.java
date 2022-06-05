@@ -18,7 +18,6 @@ Subject subjectGreatestAvgMark();
 List<Subject> subjectsAvgMarkGreater(int avgMark);
 void deleteStudentsAvgMarkLess(int avgMark);//remove all students having avg mark less than the given one
 List<Student> deleteStudentsMarksCountLess(int count); //remove all students having amount of marks less than the given one; returns being deleted students
-
 List<Student> getStudentsAllMarksSubject(int mark, String subject); //getting students having all marks on given subject >= given mark
 List<Student> getStudentsMaxMarksCount(); //getting students having maximal count of marks
 List<Subject> getSubjectsAvgMarkLess(int avgMark); //getting subjects having avg mark less than the given (using right join for subjects not having marks at all)
